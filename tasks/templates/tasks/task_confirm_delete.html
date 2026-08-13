@@ -1,0 +1,22 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Taskline &mdash; Delete {{ task.title }}{% endblock %}
+
+{% block content %}
+
+  <a class="back-link" href="{% url 'tasks:task_detail' task.pk %}">&larr; Back to task</a>
+
+  <div class="detail-card">
+    <h1>Delete this task?</h1>
+    <p>You are about to permanently delete <strong>&ldquo;{{ task.title }}&rdquo;</strong> from the database. This cannot be undone.</p>
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="detail-actions">
+        <button type="submit" class="btn btn-danger">Yes, delete it</button>
+        <a class="btn btn-ghost" href="{% url 'tasks:task_detail' task.pk %}">Cancel</a>
+      </div>
+    </form>
+  </div>
+
+{% endblock %}

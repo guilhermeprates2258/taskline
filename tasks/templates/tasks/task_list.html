@@ -1,0 +1,76 @@
+{% extends "tasks/base.html" %}
+
+{% block title %}Taskline &mdash; All Tasks{% endblock %}
+
+{% block masthead_extra %}
+  {{ done_count }} / {{ total_count }} done
+{% endblock %}
+
+{% block content %}
+
+  <div class="controls">
+    <form class="search-form" method="get">
+      <input
+        type="search"
+        name="q"
+        placeholder="Search tasks..."
+        value="{{ search_query }}"
+      >
+      {% if status_filter %}<input type="hidden" name="status" value="{{ status_filter }}">{% endif %}
+      <button class="btn btn-ghost" type="submit">Search</button>
+    </form>
+    <a href="{% url 'tasks:task_create' %}" class="btn btn-primary">+ New Task</a>
+  </div>
+
+  <div class="controls">
+    <div class="filter-pills">
+      <a class="pill {% if not status_filter %}active{% endif %}"
+         href="?{% if search_query %}q={{ search_query }}{% endif %}">All</a>
+      {% for value, label in status_choices %}
+        <a class="pill {% if status_filter == value %}active{% endif %}"
+           href="?status={{ value }}{% if search_query %}&q={{ search_query }}{% endif %}">{{ label }}</a>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if tasks %}
+    <div class="ledger">
+      {% for task in tasks %}
+        <div class="entry priority-{{ task.priority }} {% if task.is_done %}is-done{% endif %}">
+          {% if task.is_done %}<span class="stamp">Done</span>{% endif %}
+
+          <form class="toggle-form" action="{% url 'tasks:task_toggle_status' task.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="status-dot {{ task.status }}"
+                    title="Click to advance status ({{ task.get_status_display }})"></button>
+          </form>
+
+          <div class="body">
+            <div class="title-row">
+              <a class="entry-title" href="{% url 'tasks:task_detail' task.pk %}">{{ task.title }}</a>
+              <span class="meta">{{ task.get_priority_display }} priority</span>
+            </div>
+            <div class="meta">
+              {{ task.get_status_display }}
+              {% if task.due_date %} &middot; due {{ task.due_date }}{% endif %}
+            </div>
+          </div>
+
+          <div class="actions">
+            <a class="btn btn-ghost" href="{% url 'tasks:task_edit' task.pk %}">Edit</a>
+            <a class="btn btn-ghost" href="{% url 'tasks:task_delete' task.pk %}">Delete</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      {% if search_query or status_filter %}
+        No tasks match your search or filter.
+      {% else %}
+        Your ledger is empty. Add your first task to get started.
+      {% endif %}
+    </div>
+  {% endif %}
+
+{% endblock %}

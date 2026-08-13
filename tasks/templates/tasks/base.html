@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Taskline{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'tasks/style.css' %}">
+</head>
+<body>
+  <div class="wrap">
+    <div class="masthead">
+      <a href="{% url 'tasks:task_list' %}" class="wordmark">Task<span>line</span></a>
+      <div class="tally">{% block masthead_extra %}{% endblock %}</div>
+    </div>
+
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+
+    <footer class="site-footer">Taskline &mdash; a Django project for CSE 310, Module 3 (Web Apps)</footer>
+  </div>
+</body>
+</html>

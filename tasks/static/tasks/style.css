@@ -1,0 +1,344 @@
+/* =========================================================================
+   style.css — visual identity for Taskline
+   Theme: a small paper "ledger" for tracking work — every task is an
+   entry in the book, stamped with its status.
+   ========================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap');
+
+:root {
+  /* --- Color tokens --- */
+  --ink: #1C2B2A;
+  --ink-soft: #4A5B58;
+  --paper: #EDF0EC;
+  --paper-raised: #FFFFFF;
+  --line: #D6DBD3;
+  --teal: #1F6F5C;
+  --teal-deep: #144C3F;
+  --amber: #D98E3D;
+  --rose: #C4573B;
+  --slate: #5C7A93;
+
+  /* --- Type --- */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --radius: 6px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px);
+  background-size: 100% 42px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+}
+
+a { color: var(--teal-deep); }
+
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 24px 64px;
+}
+
+/* --- Top bar / masthead --- */
+.masthead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 28px 0 18px;
+  border-bottom: 3px solid var(--ink);
+  margin-bottom: 28px;
+}
+
+.masthead .wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.7rem;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.masthead .wordmark span {
+  color: var(--teal);
+}
+
+.masthead .tally {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  text-align: right;
+}
+
+/* --- Messages --- */
+.messages { list-style: none; padding: 0; margin: 0 0 20px; }
+.messages li {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  background: var(--paper-raised);
+  border-left: 4px solid var(--teal);
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  margin-bottom: 8px;
+}
+
+/* --- Controls: search + filters + new task --- */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.controls form.search-form {
+  display: flex;
+  gap: 8px;
+  flex: 1 1 220px;
+}
+
+input[type="text"],
+input[type="search"],
+input[type="date"],
+select,
+textarea,
+.form-control {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 9px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper-raised);
+  color: var(--ink);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(31, 111, 92, 0.15);
+}
+
+.filter-pills {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pill {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: var(--paper-raised);
+  color: var(--ink-soft);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.pill.active {
+  border-color: var(--teal);
+  color: var(--teal-deep);
+  background: rgba(31, 111, 92, 0.1);
+}
+
+.btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 9px 16px;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-primary { background: var(--teal); color: #fff; }
+.btn-primary:hover { background: var(--teal-deep); }
+.btn-danger { background: var(--rose); color: #fff; }
+.btn-danger:hover { background: #9c3f29; }
+.btn-ghost { background: transparent; color: var(--ink-soft); border: 1.5px solid var(--line); }
+.btn-ghost:hover { border-color: var(--ink-soft); color: var(--ink); }
+
+/* --- Task ledger entries --- */
+.ledger { display: flex; flex-direction: column; gap: 10px; }
+
+.entry {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--paper-raised);
+  border: 1.5px solid var(--line);
+  border-left-width: 6px;
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  position: relative;
+}
+
+.entry.priority-HIGH { border-left-color: var(--rose); }
+.entry.priority-MED  { border-left-color: var(--amber); }
+.entry.priority-LOW  { border-left-color: var(--slate); }
+
+.entry .toggle-form { flex-shrink: 0; }
+
+.status-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--ink-soft);
+  background: transparent;
+  cursor: pointer;
+  display: block;
+}
+
+.status-dot.DOING { border-color: var(--amber); background: rgba(217, 142, 61, 0.25); }
+.status-dot.DONE { border-color: var(--teal); background: var(--teal); }
+
+.entry .body { flex: 1; min-width: 0; }
+
+.entry .title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.entry a.entry-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.entry.is-done a.entry-title {
+  color: var(--ink-soft);
+  text-decoration: line-through;
+  text-decoration-color: var(--teal);
+}
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.entry .actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.entry .actions a, .entry .actions button {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+/* --- The "stamp" signature element for done tasks --- */
+.stamp {
+  position: absolute;
+  right: 14px;
+  top: -10px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--teal-deep);
+  border: 2px solid var(--teal-deep);
+  border-radius: 4px;
+  padding: 1px 8px;
+  background: var(--paper);
+  transform: rotate(-6deg);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 56px 20px;
+  color: var(--ink-soft);
+  border: 2px dashed var(--line);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+}
+
+/* --- Detail page --- */
+.detail-card {
+  background: var(--paper-raised);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  padding: 28px;
+}
+
+.detail-card h1 {
+  font-family: var(--font-display);
+  margin: 0 0 6px;
+}
+
+.badge-row { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+
+.badge {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  color: var(--ink-soft);
+}
+
+.badge.priority-HIGH { border-color: var(--rose); color: var(--rose); }
+.badge.priority-MED  { border-color: var(--amber); color: #96631f; }
+.badge.priority-LOW  { border-color: var(--slate); color: var(--slate); }
+.badge.status-DONE   { border-color: var(--teal); color: var(--teal-deep); }
+
+.description-block {
+  white-space: pre-wrap;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+  margin-top: 8px;
+}
+
+.detail-actions { display: flex; gap: 10px; margin-top: 24px; }
+
+/* --- Forms --- */
+.form-page { background: var(--paper-raised); border: 1.5px solid var(--line); border-radius: var(--radius); padding: 28px; }
+.field-group { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
+.field-group label { font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-soft); }
+.field-errors { color: var(--rose); font-size: 0.82rem; font-family: var(--font-mono); }
+.form-actions { display: flex; gap: 10px; margin-top: 20px; }
+
+/* --- Back link --- */
+.back-link {
+  display: inline-block;
+  margin-bottom: 16px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+.back-link:hover { color: var(--teal-deep); }
+
+footer.site-footer {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  margin-top: 48px;
+}
+
+@media (max-width: 560px) {
+  .entry { flex-wrap: wrap; }
+  .entry .actions { width: 100%; justify-content: flex-end; }
+}
