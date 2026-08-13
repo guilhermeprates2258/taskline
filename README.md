@@ -16,7 +16,7 @@ To run it locally:
 
 My purpose in writing this software was to practice building a complete CRUD (Create, Read, Update, Delete) application with Django: designing a data model, wiring up URLs and views, building HTML templates that render dynamic content, handling form submissions and validation, and persisting data in a relational database.
 
-[Software Demo Video](http://youtube.link.goes.here)
+[Software Demo Video](https://www.loom.com/share/11ec4f7c71744bccb2eb844cbd93fc17)
 
 # Web Pages
 
